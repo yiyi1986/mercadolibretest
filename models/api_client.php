@@ -81,6 +81,14 @@ class ApiClient {
         return $this->request($endpoint, $itemData, $headers, 'POST');
     }
 
+    public function getSellerOrders($seller_id) {
+        $endpoint = "/orders/search";
+        $params = ['seller' => $seller_id];
+        $headers = ['Authorization: Bearer ' . $this->access_token];
+
+        return $this->request($endpoint, $params, $headers, 'GET');
+    }
+
     public function getAccessToken() {
         return $this->access_token;
     }

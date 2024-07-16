@@ -12,7 +12,8 @@ class ApiService {
     public function executeRefreshToken() {
         $response = $this->apiClient->refreshToken();
         if ($response) {
-            print_r($response);
+            //print_r($response);
+          
         } else {
             echo "Failed to refresh token.";
         }
@@ -26,6 +27,10 @@ class ApiService {
 
     public function addItem($itemData) {
         return $this->apiClient->createItem($itemData);
+    }
+
+    public function getSellerOrders() {
+        return $this->apiClient->getSellerOrders($this->config['seller_id']);
     }
 }
 ?>

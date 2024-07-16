@@ -1,35 +1,31 @@
-<div class="container" style="margin-top: 80px">
-    <div class="jumbotron">
-        <h2>registro de productos</h2>
-        
-    </div>
-    <div class="container">
-        <table class="table table-striped ">
-            <thead>
+<div class="container">
+<h1 class="mb-4">Consulta Productos MySql</h1>
+    <?php if (isset($query) && $query): ?>
+        <h2 class="mb-3">Resultados:</h2>
+            <table class="table table-striped">
+                <thead class="thead-dark">
                 <tr>
-                    <th>id</th>
-                    <th>title</th>
-                    <th>price</th>                
-                    <th>status</th>
-           
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($query as $data): ?>
+                <?php foreach ($query as $data): ?>
                     <tr>
-                        <th><?php echo $data['id']; ?></th>
-                        <th><?php echo $data['title']; ?></th>
-                        <th><?php echo $data['price']; ?></th>
-                        <th><?php echo $data['status']; ?></th>
-         
-                        <th>
-                            <a href="index.php?m=product&id=<?php echo $data['id']?>" class="btn btn-primary">Editar</a>
-                            <a href="index.php?m=confirmarDelete&id=<?php echo $data['id']?>" class="btn btn-danger">Eliminar</a>
-                        </th>
+                        <td><?php echo $data['id']; ?></td>
+                        <td><?php echo $data['title']; ?></td>
+                        <td><?php echo $data['price']; ?></td>
+                        <td><?php echo $data['status']; ?></td>
+                        <td>
+                            <a href="index.php?m=product&id=<?php echo $data['id']; ?>" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="index.php?m=confirmarDelete&id=<?php echo $data['id']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+    <?php endif; ?>
     </div>
-    
-</div>

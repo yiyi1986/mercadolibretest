@@ -1,6 +1,6 @@
     <div class="container">
         <h1 class="mb-4">Consulta API de MercadoLibre</h1>
-        <?php if (isset($items) && $items): ?>
+        <?php if (isset($sellerOrders) && $sellerOrders): ?>
             <h2 class="mb-3">Resultados:</h2>
             <table class="table table-striped">
                 <thead class="thead-dark">
@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($items['results'] as $item): ?>
+                    <?php foreach ($sellerOrders['results'] as $item): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($item['id']); ?></td>
                             <td><?php echo htmlspecialchars($item['title']); ?></td>
@@ -22,7 +22,8 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php endif; ?>     
+        <?php endif; ?>
+      
     </div>
 
 
