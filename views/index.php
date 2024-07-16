@@ -1,5 +1,6 @@
 <div class="container">
 <h1 class="mb-4">Consulta Productos MySql</h1>
+    <h4>Muestra los productos guardados en la DB, puede modificarlos o eliminarlos, pero cuando se consulte el api se vuelven actualizar</h4>
     <?php if (isset($query) && $query): ?>
         <h2 class="mb-3">Resultados:</h2>
             <table class="table table-striped">

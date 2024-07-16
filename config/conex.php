@@ -1,10 +1,10 @@
 <?php
 class Database
 {
-    private static $dbName = 'railway' ;
-    private static $dbHost = 'viaduct.proxy.rlwy.net' ;
+    private static $dbName = 'mercadolibretest' ;
+    private static $dbHost = '127.0.0.1' ;
     private static $dbUsername = 'root';
-    private static $dbUserPassword = 'railway';
+    private static $dbUserPassword = '';
      
     private static $cont  = null;
      

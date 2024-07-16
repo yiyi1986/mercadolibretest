@@ -20,10 +20,10 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+              <li class="active"><a href="index.php">Listar Producto DB</a></li>
               <li class="active"><a href="index.php?pa=productApi">Listado de Producto Api</a></li>
               <li class="active"><a href="index.php?np=newProduct">Nuevo Producto Api</a></li> 
-              <li class="active"><a href="index.php?so=ordersApi">Listado de órdenes Api</a></li>               
-              <li class="active"><a href="index.php">Listar Producto DB</a></li>        
+              <li class="active"><a href="index.php?so=ordersApi">Listado de órdenes Api</a></li>  
             </ul>
           </div>
         </div>
