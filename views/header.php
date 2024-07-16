@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>API MERCADO LIBRE</title>
     <link rel="stylesheet" type="text/css" href="style/css/bootstrap.min.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
+              <span class="sr-only"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -23,10 +23,9 @@
               <li class="active"><a href="index.php?pa=productApi">Listado de Producto Api</a></li>
               <li class="active"><a href="index.php?np=newProduct">Nuevo Producto Api</a></li> 
               <li class="active"><a href="index.php?so=ordersApi">Listado de órdenes Api</a></li>               
-              <li class="active"><a href="index.php">Listar Producto DB</a></li>  
-              <li class="active"><a href="index.php?m=product">Nuevo registro</a></li>
+              <li class="active"><a href="index.php">Listar Producto DB</a></li>        
             </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
+          </div>
+        </div>
       </nav>
 </header>

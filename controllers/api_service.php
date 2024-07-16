@@ -1,5 +1,8 @@
 <?php
-
+    /**
+     * Clase Controladora principal para manipular el API 
+     * @author Ysariol
+     */
 class ApiService {
     private $apiClient;
     private $config;
@@ -31,6 +34,18 @@ class ApiService {
 
     public function getSellerOrders() {
         return $this->apiClient->getSellerOrders($this->config['seller_id']);
+    }
+
+    public function fetchUserItems() {
+        $response = $this->apiClient->getUserItems($this->config['seller_id']);
+        if (isset($response['results'])) {
+            return $response['results'];
+        }
+        return null;
+    }
+
+    public function fetchItemsByIds($item_ids) {
+        return $this->apiClient->getItemsByIds($item_ids);
     }
 }
 ?>

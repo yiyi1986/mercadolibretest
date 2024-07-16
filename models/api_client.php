@@ -1,4 +1,8 @@
 <?php
+    /**
+     * Clase principal para manipular el API 
+     * @author Ysariol
+     */
 
 class ApiClient {
     private $app_id;
@@ -89,8 +93,24 @@ class ApiClient {
         return $this->request($endpoint, $params, $headers, 'GET');
     }
 
+    public function getUserItems($seller_id) {
+        $endpoint = "/users/$seller_id/items/search";
+        $headers = ['Authorization: Bearer ' . $this->access_token];
+
+        return $this->request($endpoint, [], $headers, 'GET');
+    }
+
+    public function getItemsByIds($item_ids) {
+        $endpoint = "/items";
+        $params = ['ids' => implode(',', $item_ids)];
+        $headers = ['Authorization: Bearer ' . $this->access_token];
+
+        return $this->request($endpoint, $params, $headers, 'GET');
+    }
+    
     public function getAccessToken() {
         return $this->access_token;
     }
+
 }
 ?>

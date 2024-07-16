@@ -1,4 +1,8 @@
 <?php 
+    /**
+     * Clase Controladora principal para manipular productos 
+     * @author Ysariol
+     */
     require_once(__DIR__ . '/../models/product_model.php');
     require_once(__DIR__ . '/../models/api_client.php');
     require_once(__DIR__ . '/../controllers/api_service.php');
@@ -11,7 +15,7 @@
             $this->model_e=new products_model();          
 
         }
-
+        //cargar vista de listado de productos de la DB
         function index(){
             $query =$this->model_e->get();
 
@@ -20,6 +24,7 @@
             include_once('views/footer.php');
         }
 
+         //cargar vista de listado de productos de la API
         function productApi(){
             $config =  require_once(__DIR__ . '/../config/config.php');
             $apiClient = new ApiClient($config);
@@ -29,17 +34,22 @@
             $apiService->executeRefreshToken();
             $items = null;
            
-            $items = $apiService->fetchSellerItems();
-            $control_p=new product_controller();
-            $control_p->update_product_items($items);
-           
+         //   $items = $apiService->fetchSellerItems();
+             $userItems = $apiService->fetchUserItems();
+             if ($userItems) {
+                $items = $apiService->fetchItemsByIds($userItems);
+             }
+            if($items != null){
+                $control_p=new product_controller();
+                $control_p->update_product_items($items);
+            }  
         
             include_once('views/header.php');
             include_once('views/productApi.php');
             include_once('views/footer.php');
         }
 
-        
+         //cargar vista de listado de pedidos de la API
         function ordersApi(){
             $config =  require_once(__DIR__ . '/../config/config.php');
             $apiClient = new ApiClient($config);
@@ -55,11 +65,18 @@
             include_once('views/footer.php');
         }
 
-    
-
+         //cargar vista de formulario para insertar producto
         function newProduct(){
+            $newItem = null;
+        
+            include_once('views/header.php');
+            include_once('views/newProduct.php');
+            include_once('views/footer.php');
+        }  
+
+        //insertar producto por API y mostrar json
+        function newProductApi(){
             // Cargar la configuración
-            //$config = require '/../config/config.php';
             $config =  require_once(__DIR__ . '/../config/config.php');
 
             // Crear una instancia de ApiClient con la configuración
@@ -68,49 +85,53 @@
             // Crear una instancia de ApiService
             $apiService = new ApiService($apiClient, $config);
             $apiService->executeRefreshToken();
-
-                    // Crear un nuevo ítem
+            $newItem =null;             
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $itemData = [
-                        "title" => "Item de test - No Ofertar1",
-                        "category_id" => "MLU3530",
-                        "price" => 1500,
-                        "currency_id" => "UYU",
-                        "available_quantity" => 10,
-                        "buying_mode" => "buy_it_now",
-                        "condition" => "new",
-                        "listing_type_id" => "gold_special",
+                        "title" => $_POST['title'],
+                        "category_id" => $_POST['category_id'],
+                        "price" => $_POST['price'],
+                        "currency_id" => $_POST['currency_id'],
+                        "available_quantity" => $_POST['available_quantity'],
+                        "buying_mode" => $_POST['buying_mode'],
+                        "condition" => $_POST['condition'],
+                        "listing_type_id" => $_POST['listing_type_id'],
                         "sale_terms" => [
                             [
                                 "id" => "WARRANTY_TYPE",
-                                "value_name" => "Garantía del vendedor"
+                                "value_name" => $_POST['warranty_type']
                             ],
                             [
                                 "id" => "WARRANTY_TIME",
-                                "value_name" => "90 días"
+                                "value_name" => $_POST['warranty_time']
                             ]
                         ],
                         "pictures" => [
                             [
-                                "source" => "https://http2.mlstatic.com/D_NQ_NP_941568-MLU54924890509_042023-O.webp"
+                                "source" => $_POST['picture_source']
                             ]
                         ],
                         "attributes" => [
                             [
                                 "id" => "BRAND",
-                                "value_name" => "Marca del producto"
+                                "value_name" => $_POST['brand']
                             ],
                             [
                                 "id" => "EAN",
-                                "value_name" => "7898095297749"
+                                "value_name" => $_POST['ean']
                             ]
                         ]
-                    ]; 
+                    ];
+
                     $newItem = $apiService->addItem($itemData);
+                }
         
             include_once('views/header.php');
             include_once('views/newProduct.php');
             include_once('views/footer.php');
         }
+
+        //Obtener producto por Id
         function product(){
             $data=NULL;
             if(isset($_REQUEST['id'])){
@@ -122,8 +143,8 @@
             include_once('views/footer.php');
         }
 
+        //Update datos del producto en DB desde el formulario
         function get_datosE(){
-
             
             $data['id']=$_REQUEST['txt_id'];
             $data['title']=$_REQUEST['txt_title'];
@@ -142,7 +163,7 @@
             header("Location:index.php");
 
         }
-
+        // Borrar producto en DB
         function confirmarDelete(){
 
             $data=NULL;
@@ -163,6 +184,7 @@
 
         }
 
+        //Insertar o Actualizar datos del producto en DB desde el API
         function update_product_items($items)
         {
             $all_products = $this->model_e->get();
@@ -172,15 +194,14 @@
                 $products_map[$product['id']] = $product;
             }
     
-            // Iterar sobre los elementos a actualizar o insertar
-            foreach ($items['results'] as $item) {
-                $data['id']=$item['id'];
-                $data['title']=$item['title'];
-                $data['price']=$item['price'];
-                $data['status']=$item['condition'];
-                if (isset($products_map[$item['id']])) {
+            foreach ($items as $item) {
+                $data['id']=$item['body']['id'];
+                $data['title']=$item['body']['title'];
+                $data['price']=$item['body']['price'];
+                $data['status']=$item['body']['condition'];
+                if (isset($products_map[$item['body']['id']])) {
                     // El producto existe, actualizar
-                    $this->model_e->update($data, $item['id']);
+                    $this->model_e->update($data, $item['body']['id']);
                 } else {
                     // El producto no existe, insertar
                     $this->model_e->create($data);
@@ -188,8 +209,6 @@
             }
 
         }
-
-            
 
     }
 ?>
